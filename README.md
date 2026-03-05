@@ -1,1 +1,5 @@
 # Smart-FInancial-Planning-Minor-Project
+
+AI-Driven FinTech – Intelligent Financial Health Planner is a personal finance management platform that helps users analyze their financial behavior, plan financial goals, and make smarter financial decisions using data analytics and machine learning. The system integrates expense tracking, investment prediction, loan optimization, and financial health scoring into a single platform that acts as a digital financial advisor.
+
+Built using a MERN-based architecture with Python AI modules, the platform analyzes user financial data, predicts future financial outcomes, and provides recommendations such as whether to prioritize loan repayment or investment. The goal is to move beyond basic expense tracking and provide proactive, data-driven financial planning support through interactive dashboards and intelligent recommendations.
