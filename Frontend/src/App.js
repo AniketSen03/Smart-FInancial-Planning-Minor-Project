@@ -187,6 +187,9 @@ function AppInner() {
 
 export default function App() {
   return (
+    <ThemeProvider>
+      <AppInner />
+    </ThemeProvider>
     <Routes>
     <Route
         path="/signin"
