@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
-import Dashboard  from './pages/Dashboard';
-import Profile    from './pages/Profile';
-import Goals      from './pages/Goals';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+import Goals from './pages/Goals';
 import Investment from './pages/Investment';
-import Debt       from './pages/Debt';
-import WhatIf     from './pages/WhatIf';
-import Chatbot    from './pages/Chatbot';
+import Debt from './pages/Debt';
+import WhatIf from './pages/WhatIf';
+import Chatbot from './pages/Chatbot';
 import { calcHealth } from './utils';
 
 
@@ -14,13 +14,13 @@ import { Routes, Route } from "react-router-dom";
 import SignIn from './components/SignIn';
 
 const NAV = [
-  { id: 'dashboard',  label: 'Dashboard',        icon: '⬡', emoji: '📊' },
-  { id: 'profile',    label: 'Financial Profile', icon: '◈', emoji: '👤' },
-  { id: 'goals',      label: 'Goal Planner',      icon: '◎', emoji: '🎯' },
-  { id: 'investment', label: 'Investments',       icon: '◆', emoji: '📈' },
-  { id: 'debt',       label: 'Debt Optimizer',    icon: '◉', emoji: '💳' },
-  { id: 'whatif',     label: 'What-If Simulator', icon: '⬟', emoji: '🔬' },
-  { id: 'chatbot',    label: 'AI Advisor',        icon: '◇', emoji: '🤖' },
+  { id: 'dashboard', label: 'Dashboard', icon: '⬡', emoji: '📊' },
+  { id: 'profile', label: 'Financial Profile', icon: '◈', emoji: '👤' },
+  { id: 'goals', label: 'Goal Planner', icon: '◎', emoji: '🎯' },
+  { id: 'investment', label: 'Investments', icon: '◆', emoji: '📈' },
+  { id: 'debt', label: 'Debt Optimizer', icon: '◉', emoji: '💳' },
+  { id: 'whatif', label: 'What-If Simulator', icon: '⬟', emoji: '🔬' },
+  { id: 'chatbot', label: 'AI Advisor', icon: '◇', emoji: '🤖' },
 ];
 
 function ThemeToggle() {
@@ -56,28 +56,28 @@ function ThemeToggle() {
 
 function AppInner() {
   const { T, isDark } = useTheme();
-  const [page,    setPage]    = useState('dashboard');
+  const [page, setPage] = useState('dashboard');
   const [profile, setProfile] = useState({
     income: 80000, expenses: 35000, savings: 15000,
     emi: 12000, investments: 10000, emergency: 90000,
   });
   const [goals, setGoals] = useState([
-    { id: 1, name: 'Emergency Fund',    target: 210000,   saved: 90000,  priority: 'High'   },
-    { id: 2, name: 'Home Down Payment', target: 1500000,  saved: 200000, priority: 'High'   },
+    { id: 1, name: 'Emergency Fund', target: 210000, saved: 90000, priority: 'High' },
+    { id: 2, name: 'Home Down Payment', target: 1500000, saved: 200000, priority: 'High' },
     { id: 3, name: 'Retirement Corpus', target: 10000000, saved: 500000, priority: 'Medium' },
   ]);
 
-  const score      = calcHealth(profile);
+  const score = calcHealth(profile);
   const scoreColor = score >= 75 ? T.teal : score >= 50 ? T.amber : T.rose;
 
   const pages = {
-    dashboard:  <Dashboard  profile={profile} goals={goals}    />,
-    profile:    <Profile    profile={profile} setProfile={setProfile} />,
-    goals:      <Goals      goals={goals}     setGoals={setGoals} profile={profile} />,
+    dashboard: <Dashboard profile={profile} goals={goals} />,
+    profile: <Profile profile={profile} setProfile={setProfile} />,
+    goals: <Goals goals={goals} setGoals={setGoals} profile={profile} />,
     investment: <Investment />,
-    debt:       <Debt       />,
-    whatif:     <WhatIf     profile={profile} />,
-    chatbot:    <Chatbot    profile={profile} />,
+    debt: <Debt />,
+    whatif: <WhatIf profile={profile} />,
+    chatbot: <Chatbot profile={profile} />,
   };
 
   return (
@@ -187,28 +187,28 @@ function AppInner() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AppInner />
-    </ThemeProvider>
-    <Routes>
-    <Route
-        path="/signin"
-        element={
-          <>
-            <SignIn />
-          </>
-        }
-      />
+    <>
+      <ThemeProvider>
+      <Routes>
+        <Route
+          path="/signin"
+          element={
+            <>
+              <SignIn />
+            </>
+          }
+        />
 
-      <Route
-        path="/"
-        element={<ThemeProvider>
-      <AppInner />
-    </ThemeProvider>
-    }
-      />
+        <Route
+          path="/"
+          element={
+            <AppInner />}
+        />
 
-</Routes>
-    
+      </Routes>
+       </ThemeProvider>
+    </>
+
+
   );
 }
