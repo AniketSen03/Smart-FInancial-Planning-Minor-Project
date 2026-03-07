@@ -1,0 +1,466 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Root / Background ─────────────────────────────────── */
+
+.si-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #060b14;
+  font-family: 'DM Sans', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.si-bg-mesh {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0, 212, 255, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 80%, rgba(120, 40, 255, 0.09) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0, 255, 170, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.si-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* ─── Particles ─────────────────────────────────────────── */
+
+.si-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: #00d4ff;
+  animation: floatUp linear infinite;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(110vh) scale(1); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-10vh) scale(0.4); opacity: 0; }
+}
+
+/* ─── Accent Scan Line ──────────────────────────────────── */
+
+.si-accent-line {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+  height: 1px;
+  pointer-events: none;
+  animation: scanLine 6s ease-in-out infinite;
+}
+
+@keyframes scanLine {
+  0%, 100% { opacity: 0; transform: translateY(-20px); }
+  50%       { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Card ──────────────────────────────────────────────── */
+
+.si-card {
+  position: relative;
+  width: 420px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 24px;
+  padding: 48px 44px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow:
+    0 0 0 1px rgba(0, 212, 255, 0.05),
+    0 32px 80px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  opacity: 0;
+  transform: translateY(24px);
+  animation: cardIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+@keyframes cardIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Corner accent brackets */
+.si-card::before,
+.si-card::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-color: rgba(0, 212, 255, 0.5);
+  border-style: solid;
+}
+
+.si-card::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+  border-radius: 24px 0 0 0;
+}
+
+.si-card::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+  border-radius: 0 0 24px 0;
+}
+
+/* ─── Shared fade-up animation ──────────────────────────── */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Logo ──────────────────────────────────────────────── */
+
+.si-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.35s forwards;
+}
+
+.si-logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #00d4ff, #7828ff);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+.si-logo-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+.si-logo-text span {
+  color: #00d4ff;
+}
+
+/* ─── Badge ─────────────────────────────────────────────── */
+
+.si-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 20px;
+  font-size: 11px;
+  color: rgba(0, 212, 255, 0.8);
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.3s forwards;
+}
+
+.si-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00d4ff;
+  box-shadow: 0 0 6px #00d4ff;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* ─── Headline & Subtext ────────────────────────────────── */
+
+.si-headline {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #fff;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.45s forwards;
+}
+
+.si-sub {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 36px;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.5s forwards;
+}
+
+/* ─── Form Fields ───────────────────────────────────────── */
+
+.si-field {
+  position: relative;
+  margin-bottom: 18px;
+  opacity: 0;
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.si-field:nth-child(1) { animation-delay: 0.55s; }
+.si-field:nth-child(2) { animation-delay: 0.62s; }
+
+.si-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+
+.si-field.active .si-label {
+  color: #00d4ff;
+}
+
+.si-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.si-icon {
+  position: absolute;
+  left: 16px;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 15px;
+  transition: color 0.2s;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.si-field.active .si-icon {
+  color: #00d4ff;
+}
+
+.si-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px 16px 14px 44px;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.si-input:-webkit-autofill,
+.si-input:-webkit-autofill:hover,
+.si-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px rgba(6, 11, 20, 0.95) inset;
+  -webkit-text-fill-color: #fff;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.si-input::placeholder {
+  color: rgba(255, 255, 255, 0.18);
+}
+
+.si-field.active .si-input {
+  border-color: rgba(0, 212, 255, 0.4);
+  background: rgba(0, 212, 255, 0.04);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.08), 0 0 24px rgba(0, 212, 255, 0.06);
+}
+
+/* Password toggle button */
+.si-toggle {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  font-size: 15px;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.si-toggle:hover {
+  color: #00d4ff;
+}
+
+/* ─── Remember / Forgot Row ─────────────────────────────── */
+
+.si-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.7s forwards;
+}
+
+.si-check-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  user-select: none;
+}
+
+.si-checkbox {
+  width: 16px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.si-checkbox:checked {
+  background: #00d4ff;
+  border-color: #00d4ff;
+}
+
+.si-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #060b14;
+  font-weight: 700;
+}
+
+.si-forgot {
+  font-size: 13px;
+  color: rgba(0, 212, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.si-forgot:hover {
+  color: #00d4ff;
+}
+
+/* ─── Submit Button ─────────────────────────────────────── */
+
+.si-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+  border: none;
+  border-radius: 12px;
+  color: #060b14;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(0, 212, 255, 0.25);
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.78s forwards;
+}
+
+.si-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 32px rgba(0, 212, 255, 0.4);
+}
+
+.si-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.si-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.si-btn-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  animation: shine 2.4s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0%       { left: -100%; }
+  60%, 100% { left: 150%; }
+}
+
+/* ─── Loading Spinner ───────────────────────────────────── */
+
+.si-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(6, 11, 20, 0.3);
+  border-top-color: #060b14;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ─── Footer ────────────────────────────────────────────── */
+
+.si-footer {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.3);
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.95s forwards;
+}
+
+.si-footer a {
+  color: #00d4ff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.si-footer a:hover {
+  opacity: 0.8;
+}
