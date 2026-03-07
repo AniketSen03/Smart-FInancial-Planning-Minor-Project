@@ -2,12 +2,16 @@ import { useState, useEffect } from "react";
 import "../Styles/SignIn.css";
 
 export default function SignIn() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [focused, setFocused] = useState(null);
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [particles, setParticles] = useState([]);
+  const [showSignUpForm, setShowSignUpForm] = useState(false);
+
 
   useEffect(() => {
     const pts = Array.from({ length: 22 }, (_, i) => ({
@@ -27,7 +31,12 @@ export default function SignIn() {
     setTimeout(() => setLoading(false), 2200);
   };
 
-  const showSignUp = () => {
+
+  const showSignUp = () => {setShowSignUpForm(true)};  
+
+   
+   
+ 
 
   return (
     <div className="si-root">
@@ -72,7 +81,7 @@ export default function SignIn() {
           SECURE PORTAL
         </div>
 
-        <div className="sign-component">
+        {!showSignUpForm && (<div className="sign-component">
         <h2 className="si-headline">Welcome back</h2>
         <p className="si-sub">Sign in to your AI-Fintech account</p>
 
@@ -143,18 +152,30 @@ export default function SignIn() {
 
         {/* Footer */}
         <div className="si-footer">
-          Don't have an account? <a href="#" onclick={showSignUp()}>Sign up free</a>
+          Don't have an account? <a href="#" onClick={showSignUp}>Sign up free</a>
         </div>
         </div>
-      
+        )}
 
+    {showSignUpForm && (
       <div className="SignUp-component" >
         <h2 className="si-headline">Join AI-Fintech</h2>
         <p className="si-sub">Create your account to start your financial journey</p>
-      </div>
-
+     
+    
+   
+    
+    
+     {/* Footer */}
+    <div className="si-footer">
+     Already have an account? <a href="#" onClick={() => setShowSignUpForm(false)}>SignIn</a>
+    </div>
+    
+     </div>
+    
+    )}
       </div>
     </div>
   );
 }
-}  
+ 
