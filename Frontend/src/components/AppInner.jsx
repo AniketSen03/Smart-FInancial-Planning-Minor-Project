@@ -38,7 +38,7 @@ export default function AppInner() {
     const token = localStorage.getItem('token');
     if (!token) return;
     const H = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` };
-    const BASE = 'http://localhost:5000/api';
+const BASE = import.meta.env.VITE_API_BASE;
     Promise.all([
       fetch(`${BASE}/profile`, { headers: H }).then(r => r.json()),
       fetch(`${BASE}/goals`,   { headers: H }).then(r => r.json()),

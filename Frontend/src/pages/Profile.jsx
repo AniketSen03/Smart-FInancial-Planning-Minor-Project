@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { Card, Input, ScoreRing, Badge, ImgBanner } from '../components/UI';
 import { calcHealth, fmtK, fmt, IMGS } from '../utils';
-
+const BASE = import.meta.env.VITE_API_BASE;
 export default function Profile({ profile, setProfile }) {
   const { T } = useTheme();
   const score   = calcHealth(profile);

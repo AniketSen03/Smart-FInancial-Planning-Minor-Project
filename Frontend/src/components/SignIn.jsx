@@ -29,7 +29,7 @@ export default function SignIn() {
     e.preventDefault();
     setLoading(true);
     try {
-      const BASE = 'http://localhost:5000/api';
+     const BASE = import.meta.env.VITE_API_BASE;
       if (showSignUpForm) {
         if (password !== confirmPassword) {
           alert('Passwords do not match!');

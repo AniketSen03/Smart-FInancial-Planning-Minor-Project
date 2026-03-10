@@ -3,7 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { useTheme } from '../context/ThemeContext';
 import { Card, Input, Badge, ImgBanner, ChartTooltip } from '../components/UI';
 import { fmtK, fmt, IMGS } from '../utils';
-
+const BASE = import.meta.env.VITE_API_BASE;
 const GOAL_ICONS = { Home: '🏠', Retirement: '🏖️', Car: '🚗', Education: '🎓', Business: '💼', Emergency: '🛡️', Wedding: '💍', Travel: '✈️' };
 const getIcon = name => Object.keys(GOAL_ICONS).find(k => name.includes(k)) ? GOAL_ICONS[Object.keys(GOAL_ICONS).find(k => name.includes(k))] : '🎯';
 
