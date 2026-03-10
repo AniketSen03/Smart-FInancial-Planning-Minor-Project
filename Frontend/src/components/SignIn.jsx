@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "../Styles/SignIn.css";
 
-export default function SignIn() {
+export default function SignIn({ onLogin = () => {} }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,7 +45,7 @@ export default function SignIn() {
         if (!res.ok) throw new Error(data.message);
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        window.location.href = '/';
+        onLogin(); window.location.href = '/';
       } else {
         const res = await fetch(`${BASE}/auth/login`, {
           method: 'POST',
@@ -56,7 +56,7 @@ export default function SignIn() {
         if (!res.ok) throw new Error(data.message);
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        window.location.href = '/';
+        onLogin(); window.location.href = '/';
       }
     } catch (err) {
       alert(err.message);
