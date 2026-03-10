@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "../Styles/SignIn.css";
 
+const BASE = import.meta.env.VITE_API_BASE || 'https://smart-f-inancial-planning-minor-pro-chi.vercel.app/api';
+
 export default function SignIn({ onLogin = () => {} }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,7 +13,6 @@ export default function SignIn({ onLogin = () => {} }) {
   const [loading, setLoading] = useState(false);
   const [particles, setParticles] = useState([]);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
-
 
   useEffect(() => {
     const pts = Array.from({ length: 22 }, (_, i) => ({
@@ -25,11 +26,10 @@ export default function SignIn({ onLogin = () => {} }) {
     setParticles(pts);
   }, []);
 
- const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-     const BASE = import.meta.env.VITE_API_BASE || 'https://smart-f-inancial-planning-minor-pro-chi.vercel.app/api';
       if (showSignUpForm) {
         if (password !== confirmPassword) {
           alert('Passwords do not match!');
@@ -65,243 +65,144 @@ export default function SignIn({ onLogin = () => {} }) {
     }
   };
 
+  const showSignUp = () => { setShowSignUpForm(true); };
 
-  const showSignUp = () => {setShowSignUpForm(true)};  
-   
   return (
     <div className="si-root">
-      {/* Background layers */}
       <div className="si-bg-mesh" />
       <div className="si-grid" />
-      <div
-        className="si-accent-line"
-        style={{ width: "60%", left: "20%", top: "30%" }}
-      />
+      <div className="si-accent-line" style={{ width: "60%", left: "20%", top: "30%" }} />
 
-      {/* Floating particles */}
       {particles.map((p) => (
-        <div
-          key={p.id}
-          className="si-particle"
-          style={{
-            left: `${p.x}%`,
-            width: p.size,
-            height: p.size,
-            opacity: p.opacity,
-            animationDuration: `${p.speed}s`,
-            animationDelay: `${p.delay}s`,
-          }}
-        />
+        <div key={p.id} className="si-particle" style={{
+          left: `${p.x}%`, width: p.size, height: p.size,
+          opacity: p.opacity, animationDuration: `${p.speed}s`, animationDelay: `${p.delay}s`,
+        }} />
       ))}
 
-      {/* Card */}
       <div className="si-card">
-
-        {/* Logo */}
         <div className="si-logo-wrap">
           <div className="si-logo-icon">⬡</div>
-          <div className="si-logo-text">
-            AI<span>Fintech</span>
-          </div>
+          <div className="si-logo-text">AI<span>Fintech</span></div>
         </div>
 
-        {/* Badge */}
         <div className="si-badge">
           <span className="si-badge-dot" />
           SECURE PORTAL
         </div>
 
-        {!showSignUpForm && (<div className="sign-component">
-        <h2 className="si-headline">Welcome back</h2>
-        <p className="si-sub">Sign in to your AI-Fintech account</p>
+        {!showSignUpForm && (
+          <div className="sign-component">
+            <h2 className="si-headline">Welcome back</h2>
+            <p className="si-sub">Sign in to your AI-Fintech account</p>
 
-        <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
+              <div className={`si-field${focused === "email" ? " active" : ""}`}>
+                <label className="si-label">Email address</label>
+                <div className="si-input-wrap">
+                  <span className="si-icon">✉</span>
+                  <input className="si-input" type="email" placeholder="you@example.com"
+                    value={email} onChange={(e) => setEmail(e.target.value)}
+                    onFocus={() => setFocused("email")} onBlur={() => setFocused(null)} required />
+                </div>
+              </div>
 
-          {/* Email */}
-          <div className={`si-field${focused === "email" ? " active" : ""}`}>
-            <label className="si-label">Email address</label>
-            <div className="si-input-wrap">
-              <span className="si-icon">✉</span>
-              <input
-                className="si-input"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onFocus={() => setFocused("email")}
-                onBlur={() => setFocused(null)}
-                required
-              />
-            </div>
-          </div>
+              <div className={`si-field${focused === "password" ? " active" : ""}`}>
+                <label className="si-label">Password</label>
+                <div className="si-input-wrap">
+                  <span className="si-icon">🔒</span>
+                  <input className="si-input" type={showPass ? "text" : "password"} placeholder="••••••••"
+                    value={password} onChange={(e) => setPassword(e.target.value)}
+                    onFocus={() => setFocused("password")} onBlur={() => setFocused(null)} required />
+                  <button type="button" className="si-toggle" onClick={() => setShowPass((v) => !v)} tabIndex={-1}>
+                    {showPass ? "🙈" : "👁"}
+                  </button>
+                </div>
+              </div>
 
-          {/* Password */}
-          <div className={`si-field${focused === "password" ? " active" : ""}`}>
-            <label className="si-label">Password</label>
-            <div className="si-input-wrap">
-              <span className="si-icon">🔒</span>
-              <input
-                className="si-input"
-                type={showPass ? "text" : "password"}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onFocus={() => setFocused("password")}
-                onBlur={() => setFocused(null)}
-                required
-              />
-              <button
-                type="button"
-                className="si-toggle"
-                onClick={() => setShowPass((v) => !v)}
-                tabIndex={-1}
-              >
-                {showPass ? "🙈" : "👁"}
+              <div className="si-row">
+                <label className="si-check-label">
+                  <input type="checkbox" className="si-checkbox" />
+                  Remember me
+                </label>
+                <a href="#" className="si-forgot">Forgot password?</a>
+              </div>
+
+              <button className="si-btn" type="submit" disabled={loading}>
+                <div className="si-btn-shine" />
+                {loading ? <span className="si-spinner" /> : "Sign In →"}
               </button>
+            </form>
+
+            <div className="si-footer">
+              Don't have an account? <a href="#" onClick={showSignUp}>Sign up free</a>
             </div>
           </div>
-
-          {/* Remember me + Forgot password */}
-          <div className="si-row">
-            <label className="si-check-label">
-              <input type="checkbox" className="si-checkbox" />
-              Remember me
-            </label>
-            <a href="#" className="si-forgot">
-              Forgot password?
-            </a>
-          </div>
-
-          {/* Submit */}
-          <button className="si-btn" type="submit" disabled={loading}>
-            <div className="si-btn-shine" />
-            {loading ? <span className="si-spinner" /> : "Sign In →"}
-          </button>
-        </form>
-
-
-        {/* Footer */}
-        <div className="si-footer">
-          Don't have an account? <a href="#" onClick={showSignUp}>Sign up free</a>
-        </div>
-        </div>
         )}
 
-    {showSignUpForm && (
-      <div className="SignUp-component" >
-        <h2 className="si-headline">Join AI-Fintech</h2>
-        <p className="si-sub">Create your account to start your financial journey</p>
-        
-        
-        <form onSubmit={handleSubmit}>
+        {showSignUpForm && (
+          <div className="SignUp-component">
+            <h2 className="si-headline">Join AI-Fintech</h2>
+            <p className="si-sub">Create your account to start your financial journey</p>
 
-        {/* Name */}
-          <div className={`si-field${focused === "name" ? " active" : ""}`}>
-            <label className="si-label">Full Name</label>
-            <div className="si-input-wrap">
-              <span className="si-icon">✉</span>
-              <input
-                className="si-input"
-                type="text"
-                placeholder="Your Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                onFocus={() => setFocused("name")}
-                onBlur={() => setFocused(null)}
-                required
-              />
-            </div>
-          </div>
+            <form onSubmit={handleSubmit}>
+              <div className={`si-field${focused === "name" ? " active" : ""}`}>
+                <label className="si-label">Full Name</label>
+                <div className="si-input-wrap">
+                  <span className="si-icon">✉</span>
+                  <input className="si-input" type="text" placeholder="Your Name"
+                    value={name} onChange={(e) => setName(e.target.value)}
+                    onFocus={() => setFocused("name")} onBlur={() => setFocused(null)} required />
+                </div>
+              </div>
 
-          {/* Email */}
-          <div className={`si-field${focused === "email" ? " active" : ""}`}>
-            <label className="si-label">Email address</label>
-            <div className="si-input-wrap">
-              <span className="si-icon">✉</span>
-              <input
-                className="si-input"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onFocus={() => setFocused("email")}
-                onBlur={() => setFocused(null)}
-                required
-              />
-            </div>
-          </div>
+              <div className={`si-field${focused === "email" ? " active" : ""}`}>
+                <label className="si-label">Email address</label>
+                <div className="si-input-wrap">
+                  <span className="si-icon">✉</span>
+                  <input className="si-input" type="email" placeholder="you@example.com"
+                    value={email} onChange={(e) => setEmail(e.target.value)}
+                    onFocus={() => setFocused("email")} onBlur={() => setFocused(null)} required />
+                </div>
+              </div>
 
-          {/* Password */}
-          <div className={`si-field${focused === "password" ? " active" : ""}`}>
-            <label className="si-label">Password</label>
-            <div className="si-input-wrap">
-              <span className="si-icon">🔒</span>
-              <input
-                className="si-input"
-                type={showPass ? "text" : "password"}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onFocus={() => setFocused("password")}
-                onBlur={() => setFocused(null)}
-                required
-              />
-              <button
-                type="button"
-                className="si-toggle"
-                onClick={() => setShowPass((v) => !v)}
-                tabIndex={-1}
-              >
-                {showPass ? "🙈" : "👁"}
+              <div className={`si-field${focused === "password" ? " active" : ""}`}>
+                <label className="si-label">Password</label>
+                <div className="si-input-wrap">
+                  <span className="si-icon">🔒</span>
+                  <input className="si-input" type={showPass ? "text" : "password"} placeholder="••••••••"
+                    value={password} onChange={(e) => setPassword(e.target.value)}
+                    onFocus={() => setFocused("password")} onBlur={() => setFocused(null)} required />
+                  <button type="button" className="si-toggle" onClick={() => setShowPass((v) => !v)} tabIndex={-1}>
+                    {showPass ? "🙈" : "👁"}
+                  </button>
+                </div>
+              </div>
+
+              <div className={`si-field${focused === "confirmPassword" ? " active" : ""}`}>
+                <label className="si-label">Confirm Password</label>
+                <div className="si-input-wrap">
+                  <span className="si-icon">🔒</span>
+                  <input className="si-input" type={showPass ? "text" : "password"} placeholder="••••••••"
+                    value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+                    onFocus={() => setFocused("confirmPassword")} onBlur={() => setFocused(null)} required />
+                  <button type="button" className="si-toggle" onClick={() => setShowPass((v) => !v)} tabIndex={-1}>
+                    {showPass ? "🙈" : "👁"}
+                  </button>
+                </div>
+              </div>
+
+              <button className="si-btn" type="submit" disabled={loading}>
+                <div className="si-btn-shine" />
+                {loading ? <span className="si-spinner" /> : "Sign Up →"}
               </button>
+            </form>
+
+            <div className="si-footer">
+              Already have an account? <a href="#" onClick={() => setShowSignUpForm(false)}>SignIn</a>
             </div>
           </div>
-
-         {/* Confirm Password */}
-          <div className={`si-field${focused === "confirmPassword" ? " active" : ""}`}>
-            <label className="si-label">Confirm Password</label>
-            <div className="si-input-wrap">
-              <span className="si-icon">🔒</span>
-              <input
-                className="si-input"
-                type={showPass ? "text" : "password"}
-                placeholder="••••••••"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                onFocus={() => setFocused("confirmPassword")}
-                onBlur={() => setFocused(null)}
-                required
-              />
-              <button
-                type="button"
-                className="si-toggle"
-                onClick={() => setShowPass((v) => !v)}
-                tabIndex={-1}
-              >
-                {showPass ? "🙈" : "👁"}
-              </button>
-            </div>
-          </div>
-        
-
-          {/* Submit */}
-          <button className="si-btn" type="submit" disabled={loading}>
-            <div className="si-btn-shine" />
-            {loading ? <span className="si-spinner" /> : "Sign Up →"}
-          </button>
-        </form>
-    
-   
-    
-    
-     {/* Footer */}
-    <div className="si-footer">
-     Already have an account? <a href="#" onClick={() => setShowSignUpForm(false)}>SignIn</a>
-    </div>
-    
-     </div>
-    
-    )}
+        )}
       </div>
     </div>
   );
