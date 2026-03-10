@@ -3,7 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { useTheme } from '../context/ThemeContext';
 import { Card, Input, Badge, ImgBanner, ChartTooltip } from '../components/UI';
 import { fmtK, fmt, IMGS } from '../utils';
-const BASE = import.meta.env.VITE_API_BASE;
+const BASE = import.meta.env.VITE_API_BASE || 'https://smart-f-inancial-planning-minor-pro-chi.vercel.app/api';
 const GOAL_ICONS = { Home: '🏠', Retirement: '🏖️', Car: '🚗', Education: '🎓', Business: '💼', Emergency: '🛡️', Wedding: '💍', Travel: '✈️' };
 const getIcon = name => Object.keys(GOAL_ICONS).find(k => name.includes(k)) ? GOAL_ICONS[Object.keys(GOAL_ICONS).find(k => name.includes(k))] : '🎯';
 
@@ -15,7 +15,7 @@ export default function Goals({ goals, setGoals, profile }) {
     if (!form.name.trim()) return;
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/goals', {
+      const res = await fetch(`${BASE}/goals`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({
@@ -116,7 +116,7 @@ export default function Goals({ goals, setGoals, profile }) {
                 <button onClick={async () => {
   try {
     const token = localStorage.getItem('token');
-    await fetch(`http://localhost:5000/api/goals/${g.id}`, {
+    await fetch(`${BASE}/goals/${g.id}`, {
       method: 'DELETE', headers: { Authorization: `Bearer ${token}` },
     });
     setGoals(gs => gs.filter(x => x.id !== g.id));

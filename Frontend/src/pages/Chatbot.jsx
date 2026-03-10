@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { Card, Badge, ImgBanner } from '../components/UI';
 import { calcHealth, fmtK, IMGS } from '../utils';
-const BASE = import.meta.env.VITE_API_BASE;
+const BASE = import.meta.env.VITE_API_BASE || 'https://smart-f-inancial-planning-minor-pro-chi.vercel.app/api';
 export default function Chatbot({ profile }) {
   const { T } = useTheme();
   const [msgs,    setMsgs]    = useState([
@@ -39,7 +39,7 @@ Give sharp, personalized advice using Indian financial context (₹, RBI, SEBI, 
     try {
       const history = [...msgs, userMsg].map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.text }));
      const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/chat/message', {
+      const res = await fetch(`${BASE}/chat/message`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ message: input.trim() }),

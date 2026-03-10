@@ -3,7 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { useTheme } from '../context/ThemeContext';
 import { Card, StatCard, RangeInput, Badge, ImgBanner, ChartTooltip } from '../components/UI';
 import { calcEMI, fmtK, fmt, IMGS } from '../utils';
-const BASE = import.meta.env.VITE_API_BASE;
+const BASE = import.meta.env.VITE_API_BASE || 'https://smart-f-inancial-planning-minor-pro-chi.vercel.app/api';
 export default function Debt() {
   const { T } = useTheme();
   const [loans, setLoans] = useState([
@@ -17,7 +17,7 @@ export default function Debt() {
 useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
-    fetch('http://localhost:5000/api/loans', {
+    fetch(`${BASE}/loans`, {
       headers: { Authorization: `Bearer ${token}` },
     }).then(r => r.json()).then(data => {
       if (data.loans?.length) setLoans(data.loans.map(l => ({
@@ -93,7 +93,7 @@ useEffect(() => {
           <button onClick={async () => {
   try {
     const token = localStorage.getItem('token');
-    const res = await fetch('http://localhost:5000/api/loans', {
+    const res = await fetch(`${BASE}/loans`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ name: 'New Loan', principalAmount: 100000, annualInterestRate: 10, tenureMonths: 24 }),
@@ -124,7 +124,7 @@ useEffect(() => {
                   <button onClick={async () => {
   try {
     const token = localStorage.getItem('token');
-    await fetch(`http://localhost:5000/api/loans/${loan.id}`, {
+    await fetch(`${BASE}/loans/${loan.id}`, {
       method: 'DELETE', headers: { Authorization: `Bearer ${token}` },
     });
     setLoans(ls => ls.filter(l => l.id !== loan.id));

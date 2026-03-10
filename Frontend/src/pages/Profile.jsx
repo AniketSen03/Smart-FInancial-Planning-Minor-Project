@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { Card, Input, ScoreRing, Badge, ImgBanner } from '../components/UI';
 import { calcHealth, fmtK, fmt, IMGS } from '../utils';
-const BASE = import.meta.env.VITE_API_BASE;
+const BASE = import.meta.env.VITE_API_BASE || 'https://smart-f-inancial-planning-minor-pro-chi.vercel.app/api';
 export default function Profile({ profile, setProfile }) {
   const { T } = useTheme();
   const score   = calcHealth(profile);
@@ -25,7 +25,7 @@ const [saving, setSaving] = useState(false);
     setSaving(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/profile', {
+      const res = await fetch(`${BASE}/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({

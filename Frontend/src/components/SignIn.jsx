@@ -29,7 +29,7 @@ export default function SignIn() {
     e.preventDefault();
     setLoading(true);
     try {
-     const BASE = import.meta.env.VITE_API_BASE;
+     const BASE = import.meta.env.VITE_API_BASE || 'https://smart-f-inancial-planning-minor-pro-chi.vercel.app/api';
       if (showSignUpForm) {
         if (password !== confirmPassword) {
           alert('Passwords do not match!');
@@ -306,4 +306,3 @@ export default function SignIn() {
     </div>
   );
 }
- 
