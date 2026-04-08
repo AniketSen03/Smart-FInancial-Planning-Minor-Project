@@ -7,6 +7,42 @@ const { calculateSIP, calculateLumpsum, calculateSIPForGoal } = require('../serv
 const router = express.Router();
 router.use(auth);
 
+// Add at the top with other requires
+const aiService = require('../services/aiService');
+
+// ─── POST /api/predictions/ai/stock ──────────────────────────────────────
+router.post('/ai/stock', async (req, res) => {
+  try {
+    const { symbol, days } = req.body;
+    const prediction = await aiService.predictStock(symbol, days);
+    res.json({ success: true, prediction });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ─── POST /api/predictions/ai/risk ────────────────────────────────────────
+router.post('/ai/risk', async (req, res) => {
+  try {
+    const { symbol, userRiskAppetite } = req.body;
+    const analysis = await aiService.analyzeRisk(symbol, userRiskAppetite);
+    res.json({ success: true, analysis });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ─── POST /api/predictions/ai/suggestions ─────────────────────────────────
+router.post('/ai/suggestions', async (req, res) => {
+  try {
+    const { riskAppetite, amount, horizon } = req.body;
+    const suggestions = await aiService.getInvestmentSuggestions(riskAppetite, amount, horizon);
+    res.json({ success: true, suggestions });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // ─── GET /api/predictions ─────────────────────────────────────────────────
 router.get('/', async (req, res) => {
   try {

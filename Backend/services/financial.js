@@ -210,6 +210,97 @@ const buildDashboardSummary = (profile, goals, loans) => {
     },
   };
 };
+// ============ INVESTMENT SUGGESTIONS & RISK ANALYSIS ============
+// (Add at the very end of file)
+
+// Real market data for suggestions
+const MARKET_DATA = {
+  'RELIANCE': { name: 'Reliance Industries', value: 2456.30, turnover: 125.45, growth: 2.34, risk: 7, sector: 'Energy' },
+  'TCS': { name: 'Tata Consultancy Services', value: 3567.80, turnover: 89.23, growth: 1.56, risk: 3, sector: 'IT' },
+  'INFY': { name: 'Infosys', value: 1456.75, turnover: 67.89, growth: 3.21, risk: 4, sector: 'IT' },
+  'HDFC': { name: 'HDFC Bank', value: 1678.90, turnover: 234.67, growth: -0.78, risk: 5, sector: 'Banking' },
+  'WIPRO': { name: 'Wipro', value: 512.30, turnover: 45.67, growth: 5.67, risk: 8, sector: 'IT' },
+  'HINDUNILVR': { name: 'Hindustan Unilever', value: 2678.90, turnover: 156.78, growth: 1.23, risk: 2, sector: 'FMCG' }
+};
+
+// Get investment suggestions based on risk appetite
+const getInvestmentSuggestions = (riskAppetite) => {
+  let stocks = Object.keys(MARKET_DATA);
+  
+  if (riskAppetite === 'Low') {
+    stocks = stocks.filter(s => MARKET_DATA[s].risk <= 4);
+  } else if (riskAppetite === 'Medium') {
+    stocks = stocks.filter(s => MARKET_DATA[s].risk >= 3 && MARKET_DATA[s].risk <= 7);
+  } else if (riskAppetite === 'High') {
+    stocks = stocks.filter(s => MARKET_DATA[s].risk >= 6);
+  }
+  
+  return stocks.map(symbol => ({
+    symbol,
+    ...MARKET_DATA[symbol],
+    recommendation: MARKET_DATA[symbol].growth > 3 ? 'Buy' : (MARKET_DATA[symbol].growth < -1 ? 'Sell' : 'Hold')
+  }));
+};
+
+// Get similar funds based on sector
+const getSimilarFunds = (selectedSymbol) => {
+  const selected = MARKET_DATA[selectedSymbol];
+  if (!selected) return [];
+  
+  return Object.keys(MARKET_DATA)
+    .filter(s => s !== selectedSymbol && MARKET_DATA[s].sector === selected.sector)
+    .map(s => ({ symbol: s, ...MARKET_DATA[s] }));
+};
+
+// Risk vs Return analysis
+const getRiskReturnAnalysis = (symbol, userRiskAppetite) => {
+  const stock = MARKET_DATA[symbol];
+  if (!stock) return null;
+  
+  let verdict = '';
+  if (userRiskAppetite === 'Low' && stock.risk <= 4) verdict = '✅ Suitable for your low-risk profile';
+  else if (userRiskAppetite === 'Medium' && stock.risk >= 3 && stock.risk <= 7) verdict = '✅ Balanced choice for medium risk';
+  else if (userRiskAppetite === 'High' && stock.risk >= 6) verdict = '✅ High risk - High potential match';
+  else verdict = '⚠️ This stock may not match your risk appetite';
+  
+  return {
+    stockName: stock.name,
+    riskScore: stock.risk,
+    riskLevel: stock.risk <= 3 ? 'Low' : (stock.risk <= 6 ? 'Medium' : 'High'),
+    expectedReturn: stock.growth,
+    currentValue: stock.value,
+    turnover: stock.turnover,
+    recommendation: verdict,
+    suggestion: stock.risk <= 3 ? 'Good for capital preservation' :
+                (stock.risk <= 6 ? 'Suitable for balanced growth' : 'Only if you can handle volatility')
+  };
+};
+
+// Track goal progress with investment mix suggestion
+const trackGoalProgress = (goal) => {
+  const today = new Date();
+  const targetDate = new Date(goal.targetDate);
+  const monthsLeft = Math.max(0, (targetDate - today) / (1000 * 60 * 60 * 24 * 30.44));
+  
+  const requiredMonthly = calculateSIPForGoal(goal.targetAmount, goal.savedAmount, 12, monthsLeft / 12);
+  const progressPercent = (goal.savedAmount / goal.targetAmount) * 100;
+  const isOnTrack = goal.monthlySIPRequired >= requiredMonthly;
+  
+  // Investment mix based on risk profile
+  let mix = { equity: 40, debt: 40, gold: 10, cash: 10 };
+  if (goal.priority === 'high') mix = { equity: 60, debt: 25, gold: 10, cash: 5 };
+  if (goal.priority === 'low') mix = { equity: 30, debt: 50, gold: 10, cash: 10 };
+  
+  return {
+    progressPercent: progressPercent.toFixed(2),
+    monthsLeft: Math.floor(monthsLeft),
+    requiredMonthlyInvestment: requiredMonthly,
+    isOnTrack,
+    monthlyShortfall: isOnTrack ? 0 : requiredMonthly - (goal.monthlySIPRequired || 0),
+    investmentMix: mix,
+    status: progressPercent >= 100 ? 'Completed' : (isOnTrack ? 'On Track' : 'Behind Schedule')
+  };
+};
 
 module.exports = {
   calculateEMI,
@@ -219,4 +310,8 @@ module.exports = {
   calculateSIPForGoal,
   calculateHealthScore,
   buildDashboardSummary,
+  getInvestmentSuggestions,
+  getSimilarFunds,
+  getRiskReturnAnalysis,
+  trackGoalProgress
 };
